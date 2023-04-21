@@ -4,6 +4,15 @@
     <groupId>happy</groupId>
     <artifactId>Database</artifactId>
     <version>1.0-SNAPSHOT</version>
+    
+     <dependencies>
+      <dependency>
+         <groupId>mysql</groupId>
+         <artifactId>mysql-connector-java</artifactId>
+         <version>8.0.27</version>
+      </dependency>
+   </dependencies>
+    
     <packaging>jar</packaging>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
