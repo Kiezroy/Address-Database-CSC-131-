@@ -116,6 +116,9 @@ public class NewUserFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jPasswordField1ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        //Create a new user and store in database
+        
+        //Goes back to login frame
         LoginFrame loginFrame = new LoginFrame();
         loginFrame.setVisible(true);
         this.dispose();
