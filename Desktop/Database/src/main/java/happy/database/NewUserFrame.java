@@ -4,6 +4,13 @@
  */
 package happy.database;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Nick
@@ -116,13 +123,51 @@ public class NewUserFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jPasswordField1ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        //Create a new user and store in database
-        
-        //Goes back to login frame
-        LoginFrame loginFrame = new LoginFrame();
-        loginFrame.setVisible(true);
-        this.dispose();
+        //Get username and password
+        String username = jTextField1.getText();
+        String password = new String(jPasswordField1.getPassword()); //Must convert to string because GUI value is different field
 
+        //Create a new user and store in database
+        try {
+            //Connect to the database
+            Connection conn = DriverManager.getConnection("jdbc:mysql://aws.connect.psdb.cloud/addressbook?sslMode=VERIFY_IDENTITY", "2s8kzmqoh2x6eqtthca6", "pscale_pw_gZHQbFQ7wYSiSPFpa94ebriZ2QgcNXZqQy37XBn6IfF");
+
+            //Prepare a statement to select all rows with the given username from the loginInfo table
+            PreparedStatement selectStmt = conn.prepareStatement("SELECT * FROM loginInfo WHERE username = ?");
+            selectStmt.setString(1, username);
+
+            //Execute the statement to select the rows with the given username
+            ResultSet rs = selectStmt.executeQuery();
+
+            //Check if any rows were returned, indicating that the username already exists
+            if (rs.next()) {
+                JOptionPane.showMessageDialog(this, "Username already exists!");
+            } else {
+                //Prepare a statement to insert a new row into the loginInfo table
+                PreparedStatement insertStmt = conn.prepareStatement("INSERT INTO loginInfo (username, password) VALUES (?, ?)");
+                insertStmt.setString(1, username);
+                insertStmt.setString(2, password);
+
+                //Execute the statement to insert the new user
+                int numRows = insertStmt.executeUpdate();
+
+                //Close the statements and connection
+                insertStmt.close();
+                selectStmt.close();
+                conn.close();
+
+                //Show a success message to the user
+                JOptionPane.showMessageDialog(this, "User created successfully!");
+
+                //Go back to the login frame
+                LoginFrame loginFrame = new LoginFrame();
+                loginFrame.setVisible(true);
+                this.dispose();
+            }
+        } catch (SQLException ex) {
+            //Show an error message if there was a problem connecting to the database or executing the statement
+            JOptionPane.showMessageDialog(this, "Error creating user: " + ex.getMessage());
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
