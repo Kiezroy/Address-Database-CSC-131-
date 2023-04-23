@@ -10,8 +10,8 @@ public class Main {
 
         try (Connection conn = DriverManager.getConnection(
             "jdbc:mysql://aws.connect.psdb.cloud/addressbook?sslMode=VERIFY_IDENTITY",
-            "f267yyd9m4x0qnn5szpw",
-            "pscale_pw_2RFVL7jNESTmcLKSHMHL2Ik9mRfxDqdaYNwvW0y33dV")) {
+            "enaxg1h5k70p71vq5hu9",
+            "pscale_pw_bcUiXhoZs6LodtF3N0lcO2fcC21lbAKN3nBlXlPSjj9")) {
             
             // Print a message if the connection was successful
             if (!conn.isClosed()) {
