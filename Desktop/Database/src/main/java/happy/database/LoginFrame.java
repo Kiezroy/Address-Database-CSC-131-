@@ -1,5 +1,11 @@
 package happy.database;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import javax.swing.JOptionPane;
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
@@ -153,9 +159,46 @@ public class LoginFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jPasswordField1ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        JFrameAddressBook frame = new JFrameAddressBook();
-        frame.setVisible(true);
-        this.dispose();
+        //Checks user credentials
+        String username = jTextField1.getText();
+        String password = new String(jPasswordField1.getPassword());
+        
+        try{
+            // Load the MySQL JDBC driver
+            Class.forName("com.mysql.jdbc.Driver");
+            
+            //Connect to the database
+            Connection conn = DriverManager.getConnection("jdbc:mysql://aws.connect.psdb.cloud/addressbook?sslMode=VERIFY_IDENTITY", "2s8kzmqoh2x6eqtthca6", "pscale_pw_gZHQbFQ7wYSiSPFpa94ebriZ2QgcNXZqQy37XBn6IfF");
+
+            //Statement object to execute SQL queries
+            Statement stmt = conn.createStatement();
+            
+            // Execute the SQL query to check if the username and password match from the loginInfo table
+            String sql = "SELECT * FROM loginInfo WHERE username = '" + username + "' AND password = '" + password + "'";
+            ResultSet rs = stmt.executeQuery(sql);
+            
+            // If the username and password match, show a message and open the main frame
+            if (rs.next()) {
+                JOptionPane.showMessageDialog(null, "Login successful!");
+                //After user logs in, enters the addressbook
+                JFrameAddressBook frame = new JFrameAddressBook();
+                frame.setVisible(true);
+                this.dispose();
+            } else {
+                //Shows an error message if unsuccessful login
+                JOptionPane.showMessageDialog(null, "Invalid credentials. Please try again...");
+            }
+
+            // Close the database connection
+            conn.close();
+            
+            
+        }catch(Exception e){
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Login failed. Please try again...");
+        }
+        
+     
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
