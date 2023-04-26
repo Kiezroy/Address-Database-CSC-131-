@@ -195,7 +195,7 @@ public class LoginFrame extends javax.swing.JFrame {
             
         }catch(Exception e){
             e.printStackTrace();
-            JOptionPane.showMessageDialog(null, "Login failed. Please try again...");
+            JOptionPane.showMessageDialog(null, "Login failed. Please restart application...");
         }
         
      
