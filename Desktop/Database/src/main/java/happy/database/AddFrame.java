@@ -207,7 +207,7 @@ public class AddFrame extends javax.swing.JFrame {
         //Make variables from text fields
         String name = jTextField1.getText();
         String address = jTextField2.getText();
-        String phoneNumber = jTextField3.getText();
+        String phone = jTextField3.getText();
         String email = jTextField5.getText();
         String description = jTextField4.getText();
         
@@ -217,13 +217,13 @@ public class AddFrame extends javax.swing.JFrame {
             Connection conn = DriverManager.getConnection("jdbc:mysql://aws.connect.psdb.cloud/addressbook?sslMode=VERIFY_IDENTITY", "2s8kzmqoh2x6eqtthca6", "pscale_pw_gZHQbFQ7wYSiSPFpa94ebriZ2QgcNXZqQy37XBn6IfF");
             
             // create query to insert new contact into the addressbook table
-            String query = "INSERT INTO addressbook (name, address, phone_number, email, description) " + "VALUES (?, ?, ?, ?, ?)";
+            String query = "INSERT INTO addressbook (name, address, phone, email, description) " + "VALUES (?, ?, ?, ?, ?)";
 
             //Create statement to add into addressbook table
             PreparedStatement pstmt = conn.prepareStatement(query);
             pstmt.setString(1, name);
             pstmt.setString(2, address);
-            pstmt.setString(3, phoneNumber);
+            pstmt.setString(3, phone);
             pstmt.setString(4, email);
             pstmt.setString(5, description);
 
