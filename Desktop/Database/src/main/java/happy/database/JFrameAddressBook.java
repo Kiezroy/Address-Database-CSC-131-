@@ -13,8 +13,17 @@ public class JFrameAddressBook extends javax.swing.JFrame {
     /**
      * Creates new form JFrameAddressBook
      */
+    /*
     public JFrameAddressBook() {
         initComponents();
+    }
+    */
+    
+    private String username;
+    
+    public JFrameAddressBook(String username){
+        initComponents();
+        this.username = username;
     }
 
     /**
@@ -127,13 +136,15 @@ public class JFrameAddressBook extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        AddFrame frame = new AddFrame();
+        AddFrame frame = new AddFrame(username);
         frame.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
+        
+        //Make sure to pass in username here
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
@@ -145,7 +156,7 @@ public class JFrameAddressBook extends javax.swing.JFrame {
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         //Pressing edit/view button opens view frame to see contact that was selected
-        ViewFrame frame = new ViewFrame();
+        ViewFrame frame = new ViewFrame(username);
         frame.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButton3ActionPerformed
@@ -153,7 +164,7 @@ public class JFrameAddressBook extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
+    public void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -180,7 +191,7 @@ public class JFrameAddressBook extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new JFrameAddressBook().setVisible(true);
+                new JFrameAddressBook(username).setVisible(true);
             }
         });
     }

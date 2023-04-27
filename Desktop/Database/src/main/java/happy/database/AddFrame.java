@@ -18,8 +18,17 @@ public class AddFrame extends javax.swing.JFrame {
     /**
      * Creates new form NewJFrame
      */
+    private String username;
+    
+    /*
     public AddFrame() {
         initComponents();
+    }
+    */
+    
+    public AddFrame(String username){
+        initComponents();
+        this.username = username;
     }
 
     /**
@@ -196,11 +205,12 @@ public class AddFrame extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         //Cancel button returns to address book
-        JFrameAddressBook frame = new JFrameAddressBook();
+        JFrameAddressBook frame = new JFrameAddressBook(username);
         frame.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
 
+    
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         //Code for adding contact to MySQL Database
         
@@ -217,7 +227,7 @@ public class AddFrame extends javax.swing.JFrame {
             Connection conn = DriverManager.getConnection("jdbc:mysql://aws.connect.psdb.cloud/addressbook?sslMode=VERIFY_IDENTITY", "2s8kzmqoh2x6eqtthca6", "pscale_pw_gZHQbFQ7wYSiSPFpa94ebriZ2QgcNXZqQy37XBn6IfF");
             
             // create query to insert new contact into the addressbook table
-            String query = "INSERT INTO addressbook (name, address, phone, email, description) " + "VALUES (?, ?, ?, ?, ?)";
+            String query = "INSERT INTO addressbook (name, address, phone, email, description, user) " + "VALUES (?, ?, ?, ?, ?, ?)";
 
             //Create statement to add into addressbook table
             PreparedStatement pstmt = conn.prepareStatement(query);
@@ -226,6 +236,8 @@ public class AddFrame extends javax.swing.JFrame {
             pstmt.setString(3, phone);
             pstmt.setString(4, email);
             pstmt.setString(5, description);
+            
+            pstmt.setString(6, username);        //Adds user so we know who the contact belongs to
 
             // execute query
             pstmt.executeUpdate();
@@ -243,7 +255,7 @@ public class AddFrame extends javax.swing.JFrame {
         }
 
         //After adding contact, returns to address book
-        JFrameAddressBook frame = new JFrameAddressBook();
+        JFrameAddressBook frame = new JFrameAddressBook(username);
         frame.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
@@ -251,7 +263,7 @@ public class AddFrame extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
+    public void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -279,7 +291,7 @@ public class AddFrame extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new AddFrame().setVisible(true);
+                new AddFrame(username).setVisible(true);
             }
         });
     }

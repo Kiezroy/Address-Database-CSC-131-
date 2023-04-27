@@ -13,8 +13,17 @@ public class ViewFrame extends javax.swing.JFrame {
     /**
      * Creates new form NewJFrame
      */
+    /*
     public ViewFrame() {
         initComponents();
+    }
+    */
+    
+    private String username;
+    
+    public ViewFrame(String username){
+        initComponents();
+        this.username = username;
     }
 
     /**
@@ -184,14 +193,14 @@ public class ViewFrame extends javax.swing.JFrame {
         //TODO Add code to save edits made to contact
 
         //Save button returns to address book after saving edits
-        JFrameAddressBook frame = new JFrameAddressBook();
+        JFrameAddressBook frame = new JFrameAddressBook(username);
         frame.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         //Cancel button returns to address book
-        JFrameAddressBook frame = new JFrameAddressBook();
+        JFrameAddressBook frame = new JFrameAddressBook(username);
         frame.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButton3ActionPerformed
@@ -199,7 +208,7 @@ public class ViewFrame extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
+    public void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -229,7 +238,7 @@ public class ViewFrame extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ViewFrame().setVisible(true);
+                new ViewFrame(username).setVisible(true);
             }
         });
     }

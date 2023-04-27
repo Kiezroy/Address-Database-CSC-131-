@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import javax.swing.JOptionPane;
+import javax.swing.JTextField;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -158,14 +159,17 @@ public class LoginFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jPasswordField1ActionPerformed
 
+
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         //Checks user credentials
+        
         String username = jTextField1.getText();
         String password = new String(jPasswordField1.getPassword());
         
+        
         try{
             // Load the MySQL JDBC driver
-            Class.forName("com.mysql.jdbc.Driver");
+            Class.forName("com.mysql.cj.jdbc.Driver");
             
             //Connect to the database
             Connection conn = DriverManager.getConnection("jdbc:mysql://aws.connect.psdb.cloud/addressbook?sslMode=VERIFY_IDENTITY", "2s8kzmqoh2x6eqtthca6", "pscale_pw_gZHQbFQ7wYSiSPFpa94ebriZ2QgcNXZqQy37XBn6IfF");
@@ -174,14 +178,14 @@ public class LoginFrame extends javax.swing.JFrame {
             Statement stmt = conn.createStatement();
             
             // Execute the SQL query to check if the username and password match from the loginInfo table
-            String sql = "SELECT * FROM loginInfo WHERE username = '" + username + "' AND password = '" + password + "'";
+            String sql = "SELECT * FROM loginInfo WHERE BINARY username = '" + username + "' AND BINARY password = '" + password + "'";
             ResultSet rs = stmt.executeQuery(sql);
             
             // If the username and password match, show a message and open the main frame
             if (rs.next()) {
                 JOptionPane.showMessageDialog(null, "Login successful!");
                 //After user logs in, enters the addressbook
-                JFrameAddressBook frame = new JFrameAddressBook();
+                JFrameAddressBook frame = new JFrameAddressBook(username); //Once logged in, must pass in username so other classes can access it
                 frame.setVisible(true);
                 this.dispose();
             } else {
@@ -195,12 +199,12 @@ public class LoginFrame extends javax.swing.JFrame {
             
         }catch(Exception e){
             e.printStackTrace();
-            JOptionPane.showMessageDialog(null, "Login failed. Please restart application...");
+            JOptionPane.showMessageDialog(null, "Network failed. Please restart application and check connection...");
         }
-        
-     
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    
+    
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         //When new user is clicked, opens new user frame
         NewUserFrame sf = new NewUserFrame();
@@ -250,7 +254,8 @@ public class LoginFrame extends javax.swing.JFrame {
             }
         });
     }
-
+    
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
