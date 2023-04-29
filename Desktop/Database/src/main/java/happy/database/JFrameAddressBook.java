@@ -56,8 +56,6 @@ public class JFrameAddressBook extends javax.swing.JFrame {
 
         jLabel3.setText("Search:");
 
-        jFormattedTextField1.setText("jFormattedTextField1");
-
         jButton1.setText("+ Add");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -142,9 +140,11 @@ public class JFrameAddressBook extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
-        
+        //Opens the delete frame
         //Make sure to pass in username here
+        DeleteFrame frame = new DeleteFrame(username);
+        frame.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
