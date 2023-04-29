@@ -4,10 +4,20 @@
  */
 package happy.database;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.DefaultListModel;
+
 /**
  *
  * @author bkala
  */
+
 public class JFrameAddressBook extends javax.swing.JFrame {
 
     /**
@@ -18,12 +28,12 @@ public class JFrameAddressBook extends javax.swing.JFrame {
         initComponents();
     }
     */
-    
     private String username;
     
     public JFrameAddressBook(String username){
         initComponents();
         this.username = username;
+        populateJList();
     }
 
     /**
@@ -47,11 +57,6 @@ public class JFrameAddressBook extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(153, 255, 204));
 
-        jList1.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
         jScrollPane1.setViewportView(jList1);
 
         jLabel3.setText("Search:");
@@ -132,7 +137,8 @@ public class JFrameAddressBook extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    
+    
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         AddFrame frame = new AddFrame(username);
         frame.setVisible(true);
@@ -194,6 +200,67 @@ public class JFrameAddressBook extends javax.swing.JFrame {
                 new JFrameAddressBook(username).setVisible(true);
             }
         });
+        /*
+        try {
+            Connection conn = DriverManager.getConnection("jdbc:mysql://your-database-url", "your-username", "your-password");
+            Statement stmt = conn.createStatement();
+
+            // Execute the SQL query to retrieve the names from the addressbook table
+            String sql = "SELECT name FROM addressbook";
+            ResultSet rs = stmt.executeQuery(sql);
+            
+            
+            // Iterate through the ResultSet and print the names
+            DefaultListModel DLM = new DefaultListModel();
+            while (rs.next()) {
+                String name = rs.getString("name");
+                DLM.addElement(name);
+            }
+            jList1.setModel(DLM);
+            jList1.revalidate();
+            
+            
+
+            // Close the connection and statement
+            rs.close();
+            stmt.close();
+            conn.close();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        */
+    }
+    
+    private void populateJList() {
+        try {
+            // Load the JDBC driver and establish a connection to the database.
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection conn = DriverManager.getConnection("jdbc:mysql://aws.connect.psdb.cloud/addressbook?sslMode=VERIFY_IDENTITY", "2s8kzmqoh2x6eqtthca6", "pscale_pw_gZHQbFQ7wYSiSPFpa94ebriZ2QgcNXZqQy37XBn6IfF");
+
+            // Execute the query and get the results.
+            String sql = "SELECT name FROM addressbook WHERE BINARY user = '" + username + "'";
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
+
+            // Add the results to the model.
+            DefaultListModel<String> model = new DefaultListModel<>();
+            while (rs.next()) {
+                model.addElement(rs.getString("name"));
+            }
+
+            // Set the model on the JList.
+            jList1.setModel(model);
+
+            // Clean up.
+            rs.close();
+            stmt.close();
+            conn.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } catch (ClassNotFoundException ex) {
+            ex.printStackTrace();
+        }
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
