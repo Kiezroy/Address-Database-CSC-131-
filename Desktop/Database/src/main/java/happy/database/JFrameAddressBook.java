@@ -4,6 +4,8 @@
  */
 package happy.database;
 
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -34,6 +36,22 @@ public class JFrameAddressBook extends javax.swing.JFrame {
         initComponents();
         this.username = username;
         populateJList();
+        
+        //Keylistener is added in to listen if search is used 
+         jFormattedTextField1.addKeyListener(new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+                populateJList();
+            }
+        });
     }
 
     /**
@@ -60,6 +78,12 @@ public class JFrameAddressBook extends javax.swing.JFrame {
         jScrollPane1.setViewportView(jList1);
 
         jLabel3.setText("Search:");
+
+        jFormattedTextField1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jFormattedTextField1ActionPerformed(evt);
+            }
+        });
 
         jButton1.setText("+ Add");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -167,6 +191,10 @@ public class JFrameAddressBook extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_jButton3ActionPerformed
 
+    private void jFormattedTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jFormattedTextField1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jFormattedTextField1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -200,46 +228,21 @@ public class JFrameAddressBook extends javax.swing.JFrame {
                 new JFrameAddressBook(username).setVisible(true);
             }
         });
-        /*
-        try {
-            Connection conn = DriverManager.getConnection("jdbc:mysql://your-database-url", "your-username", "your-password");
-            Statement stmt = conn.createStatement();
-
-            // Execute the SQL query to retrieve the names from the addressbook table
-            String sql = "SELECT name FROM addressbook";
-            ResultSet rs = stmt.executeQuery(sql);
-            
-            
-            // Iterate through the ResultSet and print the names
-            DefaultListModel DLM = new DefaultListModel();
-            while (rs.next()) {
-                String name = rs.getString("name");
-                DLM.addElement(name);
-            }
-            jList1.setModel(DLM);
-            jList1.revalidate();
-            
-            
-
-            // Close the connection and statement
-            rs.close();
-            stmt.close();
-            conn.close();
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        */
+        
     }
     
     private void populateJList() {
+        //Looks at the results of the search bar
+        String searchQuery = jFormattedTextField1.getText().trim();
+        
         try {
             // Load the JDBC driver and establish a connection to the database.
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection conn = DriverManager.getConnection("jdbc:mysql://aws.connect.psdb.cloud/addressbook?sslMode=VERIFY_IDENTITY", "2s8kzmqoh2x6eqtthca6", "pscale_pw_gZHQbFQ7wYSiSPFpa94ebriZ2QgcNXZqQy37XBn6IfF");
 
             // Execute the query and get the results.
-            String sql = "SELECT name FROM addressbook WHERE BINARY user = '" + username + "'";
+            //String sql = "SELECT name FROM addressbook WHERE BINARY user = '" + username + "'";
+            String sql = "SELECT name FROM addressbook WHERE BINARY user = '" + username + "' AND name LIKE '%" + searchQuery + "%'"; //Checks against the search to filter through contacts
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(sql);
 
