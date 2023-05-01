@@ -14,6 +14,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
+import javax.swing.JOptionPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -34,6 +35,8 @@ public class JFrameAddressBook extends javax.swing.JFrame {
     */
     private String username;
     
+    private String selectedItem;
+    
     
     String name; 
     String address;
@@ -45,6 +48,11 @@ public class JFrameAddressBook extends javax.swing.JFrame {
         initComponents();
         this.username = username;
         populateJList();
+        
+        //Initially set the buttons to be greyed out
+        jButton2.setEnabled(false);
+        jButton3.setEnabled(false);
+
         
         //Keylistener is added in to listen if search is used 
          jFormattedTextField1.addKeyListener(new KeyListener() {
@@ -65,6 +73,19 @@ public class JFrameAddressBook extends javax.swing.JFrame {
          
         jList1.addListSelectionListener(this::jList1ValueChanged); //Adds a listener to check if an item is selected in the jList1
          
+        //Enables edit/view and delete button based on if an item is selected
+        jList1.addListSelectionListener(new ListSelectionListener() {
+        @Override
+        public void valueChanged(ListSelectionEvent e) {
+                if (jList1.getSelectedIndex() == -1) {
+                    jButton2.setEnabled(false);
+                    jButton3.setEnabled(false);
+                } else {
+                    jButton2.setEnabled(true);
+                    jButton3.setEnabled(true);
+                }
+            }
+        });
     }
 
     /**
@@ -183,11 +204,59 @@ public class JFrameAddressBook extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        //Code for adding contact to MySQL Database
+
+        //Make variables from text fields
+        //System.out.println(selectedItem);
+        String name = selectedItem;
+        
+        //Open the database
+        try{
+            //Connect to the database
+            Connection conn = DriverManager.getConnection("jdbc:mysql://aws.connect.psdb.cloud/addressbook?sslMode=VERIFY_IDENTITY", "2s8kzmqoh2x6eqtthca6", "pscale_pw_gZHQbFQ7wYSiSPFpa94ebriZ2QgcNXZqQy37XBn6IfF");
+
+            //Statement object to execute SQL queries
+            Statement stmt = conn.createStatement();
+            
+            // create query to insert new contact into the addressbook table
+            String sql = "DELETE FROM addressbook WHERE BINARY user = '" + username + "' AND BINARY name = '" + name + "'"; // only delete contacts that belong to you (username)            
+            int rowsAffected = stmt.executeUpdate(sql);
+
+            //If statements check if mysql command successfully affected a row
+            if (rowsAffected > 0) {
+                JOptionPane.showMessageDialog(null, "Successfully deleted " + name + "!"); //Display success statement indicating contact was successfully deleted
+                // After user deletes, enters the address book
+                JFrameAddressBook frame = new JFrameAddressBook(username);
+                frame.setVisible(true);
+                this.dispose();
+            } else {
+                // Shows an error message if contact doesn't exist for that user
+                JOptionPane.showMessageDialog(null, "Contact does not exist. Please try again... (Check CAPS)");
+                //returns to address book
+                JFrameAddressBook frame = new JFrameAddressBook(username);
+                frame.setVisible(true);
+                this.dispose();
+            }
+
+
+            // close connection and statement
+            conn.close();
+
+        }catch(Exception e){
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Deleting contact failed. Please try again...");
+        }
+
+   
+
+        
         //Opens the delete frame
         //Make sure to pass in username here
+        /*
         DeleteFrame frame = new DeleteFrame(username);
         frame.setVisible(true);
         this.dispose();
+        */
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
@@ -293,7 +362,7 @@ public class JFrameAddressBook extends javax.swing.JFrame {
             // If the selected index is not -1 (i.e. an item is selected)
             if (selectedIndex != -1) {
                 // Get the selected item
-                String selectedItem = jList1.getSelectedValue();
+                selectedItem = jList1.getSelectedValue();
 
                 // Query the database to get the information for the selected item
                 try (Connection conn = DriverManager.getConnection("jdbc:mysql://aws.connect.psdb.cloud/addressbook?sslMode=VERIFY_IDENTITY", "2s8kzmqoh2x6eqtthca6", "pscale_pw_gZHQbFQ7wYSiSPFpa94ebriZ2QgcNXZqQy37XBn6IfF")) {
