@@ -14,6 +14,8 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 /**
  *
@@ -32,6 +34,13 @@ public class JFrameAddressBook extends javax.swing.JFrame {
     */
     private String username;
     
+    
+    String name; 
+    String address;
+    String phone;
+    String email;
+    String description;
+    
     public JFrameAddressBook(String username){
         initComponents();
         this.username = username;
@@ -48,10 +57,14 @@ public class JFrameAddressBook extends javax.swing.JFrame {
             }
 
             @Override
+            //When the user stops typing in the search bar, it refreshes the Jlist
             public void keyReleased(KeyEvent e) {
                 populateJList();
             }
         });
+         
+        jList1.addListSelectionListener(this::jList1ValueChanged); //Adds a listener to check if an item is selected in the jList1
+         
     }
 
     /**
@@ -185,8 +198,12 @@ public class JFrameAddressBook extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        
+        
+
+
         //Pressing edit/view button opens view frame to see contact that was selected
-        ViewFrame frame = new ViewFrame(username);
+        ViewFrame frame = new ViewFrame(username, name, address, phone, email, description);
         frame.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButton3ActionPerformed
@@ -265,7 +282,42 @@ public class JFrameAddressBook extends javax.swing.JFrame {
             ex.printStackTrace();
         }
     }
+    
+    //Method that tracks when the contact list is selected, carries over the data from the selected item to ViewFrame
+    private void jList1ValueChanged(javax.swing.event.ListSelectionEvent evt) {                                   
+        //If statement exists so that code below only activates when item is fully selected rather than when transitioning clicking one to another
+        if (!evt.getValueIsAdjusting()) {
+            // Get the selected index
+            int selectedIndex = jList1.getSelectedIndex();
 
+            // If the selected index is not -1 (i.e. an item is selected)
+            if (selectedIndex != -1) {
+                // Get the selected item
+                String selectedItem = jList1.getSelectedValue();
+
+                // Query the database to get the information for the selected item
+                try (Connection conn = DriverManager.getConnection("jdbc:mysql://aws.connect.psdb.cloud/addressbook?sslMode=VERIFY_IDENTITY", "2s8kzmqoh2x6eqtthca6", "pscale_pw_gZHQbFQ7wYSiSPFpa94ebriZ2QgcNXZqQy37XBn6IfF")) {
+                    Statement stmt = conn.createStatement();
+                    ResultSet rs = stmt.executeQuery("SELECT * FROM addressbook WHERE name='" + selectedItem + "'");
+
+                    // If there is a result, get the values and save them to variables
+                    if (rs.next()) {
+                        //Saves the data from the selected item so it can go into ViewFrame for editing/viewing
+                        name = rs.getString("name");
+                        address = rs.getString("address");
+                        phone = rs.getString("phone");
+                        email = rs.getString("email");
+                        description = rs.getString("description");
+                    }
+                } catch (SQLException ex) {
+                    // Handle the SQL exception
+                    ex.printStackTrace();
+                }
+            }
+        }
+    }   
+
+ 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
