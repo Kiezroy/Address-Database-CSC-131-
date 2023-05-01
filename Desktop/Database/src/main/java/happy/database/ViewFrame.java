@@ -4,6 +4,11 @@
  */
 package happy.database;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author annatran
@@ -174,14 +179,14 @@ public class ViewFrame extends javax.swing.JFrame {
                 .addGap(34, 34, 34)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel2)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel3)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel4))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -219,7 +224,47 @@ public class ViewFrame extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         //TODO Add code to save edits made to contact
+        
+        //Make variables from text fields
+        String nameUpdated = jTextField1.getText();
+        String addressUpdated = jTextField2.getText();
+        String phoneUpdated = jTextField3.getText();
+        String emailUpdated = jTextField5.getText();
+        String descriptionUpdated = jTextField4.getText();
+        
+        try{
+            Connection conn = DriverManager.getConnection("jdbc:mysql://aws.connect.psdb.cloud/addressbook?sslMode=VERIFY_IDENTITY", "2s8kzmqoh2x6eqtthca6", "pscale_pw_gZHQbFQ7wYSiSPFpa94ebriZ2QgcNXZqQy37XBn6IfF");
 
+            //Updates the existing contact instead of inserting an entirely new one
+            String query = "UPDATE addressbook SET name = ?, address = ?, phone = ?, email = ?, description = ?, user = ? WHERE name = ?";
+            
+            //Create statement to add into addressbook table
+            PreparedStatement pstmt = conn.prepareStatement(query);
+            pstmt.setString(1, nameUpdated);
+            pstmt.setString(2, addressUpdated);
+            pstmt.setString(3, phoneUpdated);
+            pstmt.setString(4, emailUpdated);
+            pstmt.setString(5, descriptionUpdated);
+            
+            pstmt.setString(6, username);        //Adds user so we know who the contact belongs to
+            pstmt.setString(7, name);   //Ensures that only that one contact is updated in the addressbook table rather than the entire table (matches old name)
+
+
+            // execute query
+            pstmt.executeUpdate();
+
+            // close connection and statement
+            pstmt.close();
+            conn.close();
+            
+             //Display success message
+            JOptionPane.showMessageDialog(null, "Successfully saved edits!");
+
+        }catch(Exception e){
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Unable to edit/save. Please try again...");
+        }
+        
         //Save button returns to address book after saving edits
         JFrameAddressBook frame = new JFrameAddressBook(username);
         frame.setVisible(true);
