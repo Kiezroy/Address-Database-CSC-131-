@@ -207,7 +207,6 @@ public class JFrameAddressBook extends javax.swing.JFrame {
         //Code for adding contact to MySQL Database
 
         //Make variables from text fields
-        //System.out.println(selectedItem);
         String name = selectedItem;
         
         //Open the database
