@@ -5,13 +5,35 @@
     <artifactId>Database</artifactId>
     <version>1.0-SNAPSHOT</version>
     
+    <!-- Gives access to Maven repository, imporant to add before dependencies-->
+    <repositories>
+        <repository>
+          <id>central</id>
+          <name>Maven Central Repository</name>
+          <url>https://repo.maven.apache.org/maven2</url>
+          <layout>default</layout>
+        </repository>
+    </repositories>
+    
+    
+    <!-- Driver for MySQL to function -->
      <dependencies>
       <dependency>
          <groupId>mysql</groupId>
          <artifactId>mysql-connector-java</artifactId>
          <version>8.0.27</version>
       </dependency>
-   </dependencies>
+      
+      <!-- Allows for JUnit tests to be conducted -->
+      <dependency>
+        <groupId>org.junit.jupiter</groupId>
+        <artifactId>junit-jupiter</artifactId>
+        <version>5.8.2</version>
+        <scope>test</scope>
+     </dependency>
+
+      
+    </dependencies>
     
     <packaging>jar</packaging>
     <properties>
