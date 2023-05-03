@@ -16,7 +16,7 @@
     </repositories>
     
     
-    <!-- Driver for MySQL to function -->
+    <!-- Driver for MySQL to function for JDBC -->
      <dependencies>
       <dependency>
          <groupId>mysql</groupId>
