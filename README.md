@@ -13,7 +13,7 @@ Sidharth Lal*
 ## Project Description
 This project involves developing an address book application with a user-friendly Java Swing GUI along with the latest JDK (version 20) that allows users to store and manage their contacts. The application will be backed by a MySQL database hosted on PlanetScale. The project follows an Agile methodology with iterative development and continuous integration. Key features of the application include adding, updating, deleting, and searching for contact information. Management will be conducted through JIRA and Github.
 
-![addressbook](https://user-images.githubusercontent.com/67439231/236986588-9e6b4ca3-3592-424b-941b-ef0a4e892250.png) ![login](https://user-images.githubusercontent.com/67439231/236987722-64d5180a-277d-47b0-bc1e-932fb21875d7.png) ![newuser](https://user-images.githubusercontent.com/67439231/236987369-ddb551c7-c79e-413d-8bb1-405de9f37ab3.png)
+![addressbook](https://user-images.githubusercontent.com/67439231/236986588-9e6b4ca3-3592-424b-941b-ef0a4e892250.png) ![login](https://user-images.githubusercontent.com/67439231/236987722-64d5180a-277d-47b0-bc1e-932fb21875d7.png) ![newuser](https://user-images.githubusercontent.com/67439231/236987369-ddb551c7-c79e-413d-8bb1-405de9f37ab3.png) ![add](https://user-images.githubusercontent.com/67439231/236988086-1641396e-8bbe-49aa-aa33-dfc312f04ddf.png)
 
 
 
