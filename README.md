@@ -10,6 +10,9 @@ Nicholas Mazzella |
 Prabhash Venkat Paila |
 Sidharth Lal*
 
+## Project Description
+This project involves developing an address book application with a user-friendly Java Swing GUI along with the latest JDK (version 20) that allows users to store and manage their contacts. The application will be backed by a MySQL database hosted on PlanetScale. The project follows an Agile methodology with iterative development and continuous integration. Key features of the application include adding, updating, deleting, and searching for contact information. Management will be conducted through JIRA and Github.
+
 ## Directions to Connect to Netbeans and View Project
 1. Download ZIP File from repository
 2. Navigate to "Database" folder
@@ -19,10 +22,6 @@ Sidharth Lal*
 6. Go to Tools -> Libraries -> Insert .jar file
 7. In Netbeans go to Services -> Databases -> New Connection -> Enter details from [planetscale.com](planetscale.com)
 8. Run the project in Netbeans and enjoy!
-
-## Project Description
-This project involves developing an address book application with a user-friendly Java Swing GUI along with the latest JDK (version 20) that allows users to store and manage their contacts. The application will be backed by a MySQL database hosted on PlanetScale. The project follows an Agile methodology with iterative development and continuous integration. Key features of the application include adding, updating, deleting, and searching for contact information. Management will be conducted through JIRA and Github.
-
 
 ## 🔗 Links
 
