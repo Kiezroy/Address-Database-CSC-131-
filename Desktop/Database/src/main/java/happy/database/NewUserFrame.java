@@ -148,7 +148,9 @@ public class NewUserFrame extends javax.swing.JFrame {
         //Create a new user and store in database
         try {
             //Connect to the database
-            Connection conn = DriverManager.getConnection("jdbc:mysql://aws.connect.psdb.cloud/addressbook?sslMode=VERIFY_IDENTITY", "2s8kzmqoh2x6eqtthca6", "pscale_pw_gZHQbFQ7wYSiSPFpa94ebriZ2QgcNXZqQy37XBn6IfF");
+            Connection conn = DriverManager.getConnection("jdbc:mysql://aws.connect.psdb.cloud/addressbook?sslMode=VERIFY_IDENTITY", 
+                                                          "2s8kzmqoh2x6eqtthca6", 
+                                                          "pscale_pw_gZHQbFQ7wYSiSPFpa94ebriZ2QgcNXZqQy37XBn****"); //*****Replace "****" with "6IfF" to the end before launching******
 
             //Prepare a statement to select all rows with the given username from the loginInfo table
             PreparedStatement selectStmt = conn.prepareStatement("SELECT * FROM loginInfo WHERE username = ?");
