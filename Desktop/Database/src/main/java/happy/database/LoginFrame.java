@@ -172,7 +172,9 @@ public class LoginFrame extends javax.swing.JFrame {
             Class.forName("com.mysql.cj.jdbc.Driver");
             
             //Connect to the database
-            Connection conn = DriverManager.getConnection("jdbc:mysql://aws.connect.psdb.cloud/addressbook?sslMode=VERIFY_IDENTITY", "2s8kzmqoh2x6eqtthca6", "pscale_pw_gZHQbFQ7wYSiSPFpa94ebriZ2QgcNXZqQy37XBn6IfF");
+            Connection conn = DriverManager.getConnection("jdbc:mysql://aws.connect.psdb.cloud/addressbook?sslMode=VERIFY_IDENTITY", 
+                                                          "2s8kzmqoh2x6eqtthca6", 
+                                                          "pscale_pw_gZHQbFQ7wYSiSPFpa94ebriZ2QgcNXZqQy37XBn****"); //*****Replace "****" with "6IfF" to the end before launching******
 
             //Statement object to execute SQL queries
             Statement stmt = conn.createStatement();
